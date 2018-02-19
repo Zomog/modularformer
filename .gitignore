@@ -29,6 +29,10 @@ ExportedObj/
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
+# Unity3D player DLL
+UnityPlayer.dll
+
 # Builds
 *.apk
 *.unitypackage
+*.exe
