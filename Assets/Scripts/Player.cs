@@ -24,6 +24,10 @@ public class Player : MonoBehaviour {
 
     private bool facingRight;
 
+    private float horizontal;
+
+    private bool canJump;
+
     Transform playerBody;
 
     public Transform arm;
@@ -38,21 +42,43 @@ public class Player : MonoBehaviour {
 	
     void FixedUpdate() {
 
-        float horizontal = Input.GetAxis("Horizontal");
 
-        Movement(horizontal);
+
+
+
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
 
+        Movement(horizontal, canJump);
+    }
+    void Update()
+    {
+       
+        horizontal = Input.GetAxis("Horizontal");
         Flip(horizontal);
-     }
+        CheckJumpCondition();
 
-    private void Movement(float horizontal)
+    }
+
+    void CheckJumpCondition()
+    {
+        if (isGrounded && Input.GetKey(KeyCode.W))
+        {
+            canJump = true;
+            isGrounded = false;
+        }
+        else
+            canJump = false;
+    }
+
+    private void Movement(float horizontal, bool canJump)
     {
         rigid.velocity = new Vector2(horizontal * speed, rigid.velocity.y);
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.W))
+        if (canJump)
         {
+            canJump = false;
+            isGrounded = false;
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
         }
     }
